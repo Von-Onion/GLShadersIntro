@@ -1,0 +1,73 @@
+[gd_resource type="VisualShader" load_steps=8 format=3 uid="uid://cgdmaovc2xqjt"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e10xi"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mlhef"]
+noise = SubResource("FastNoiseLite_e10xi")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_7yrk3"]
+output_port_for_preview = 0
+texture = SubResource("NoiseTexture2D_mlhef")
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_y27kq"]
+input_name = "texture"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_aympq"]
+expanded_output_ports = [0]
+source = 5
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_vifbo"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_p6xox"]
+constant = 1.0
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform sampler2D tex_frg_2;
+
+
+
+void fragment() {
+// Texture2D:2
+	vec4 n_out2p0 = texture(tex_frg_2, UV);
+
+
+// FloatConstant:6
+	float n_out6p0 = 1.000000;
+
+
+	vec4 n_out4p0;
+// Texture2D:4
+	n_out4p0 = texture(TEXTURE, UV);
+	float n_out4p4 = n_out4p0.a;
+
+
+// FloatOp:5
+	float n_out5p0 = n_out6p0 * n_out4p4;
+
+
+// Output:0
+	COLOR.rgb = vec3(n_out2p0.xyz);
+	COLOR.a = n_out5p0;
+
+
+}
+"
+graph_offset = Vector2(-258.26, -191.181)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(520, 120)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_7yrk3")
+nodes/fragment/2/position = Vector2(-100, -620)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_y27kq")
+nodes/fragment/3/position = Vector2(-640, 160)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_aympq")
+nodes/fragment/4/position = Vector2(-240, 200)
+nodes/fragment/5/node = SubResource("VisualShaderNodeFloatOp_vifbo")
+nodes/fragment/5/position = Vector2(160, 100)
+nodes/fragment/6/node = SubResource("VisualShaderNodeFloatConstant_p6xox")
+nodes/fragment/6/position = Vector2(-160, -40)
+nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 4, 4, 5, 1, 5, 0, 0, 1, 6, 0, 5, 0, 2, 0, 0, 0)

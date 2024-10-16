@@ -1,0 +1,71 @@
+[gd_resource type="VisualShader" load_steps=6 format=3 uid="uid://dcaroj4bg6k23"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_8e3pm"]
+output_port_for_preview = 2
+expanded_output_ports = [0]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_rnsxn"]
+default_input_values = [0, 0.5, 1, 0.5, 2, 0.0]
+op_type = 0
+
+[sub_resource type="VisualShaderNodeVectorDistance" id="VisualShaderNodeVectorDistance_qnnik"]
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
+op_type = 0
+
+[sub_resource type="VisualShaderNodeStep" id="VisualShaderNodeStep_uoah7"]
+default_input_values = [0, 0.3, 1, 0.0]
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_rbulw"]
+constant = 0.393
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+
+
+
+void fragment() {
+// FloatConstant:6
+	float n_out6p0 = 0.393000;
+
+
+// VectorCompose:3
+	float n_in3p0 = 0.50000;
+	float n_in3p1 = 0.50000;
+	vec2 n_out3p0 = vec2(n_in3p0, n_in3p1);
+
+
+// Input:2
+	vec2 n_out2p0 = UV;
+
+
+// Distance:4
+	float n_out4p0 = distance(n_out3p0, n_out2p0);
+
+
+// Step:5
+	float n_out5p0 = step(n_out6p0, n_out4p0);
+
+
+// Output:0
+	COLOR.a = n_out5p0;
+
+
+}
+"
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(940, 140)
+nodes/fragment/2/node = SubResource("VisualShaderNodeInput_8e3pm")
+nodes/fragment/2/position = Vector2(-280, 340)
+nodes/fragment/3/node = SubResource("VisualShaderNodeVectorCompose_rnsxn")
+nodes/fragment/3/position = Vector2(-69.076, 157.308)
+nodes/fragment/4/node = SubResource("VisualShaderNodeVectorDistance_qnnik")
+nodes/fragment/4/position = Vector2(260, 180)
+nodes/fragment/5/node = SubResource("VisualShaderNodeStep_uoah7")
+nodes/fragment/5/position = Vector2(620, 200)
+nodes/fragment/6/node = SubResource("VisualShaderNodeFloatConstant_rbulw")
+nodes/fragment/6/position = Vector2(240, -20)
+nodes/fragment/connections = PackedInt32Array(3, 0, 4, 0, 2, 0, 4, 1, 4, 0, 5, 1, 5, 0, 0, 1, 6, 0, 5, 0)
